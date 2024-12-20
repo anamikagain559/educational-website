@@ -1,8 +1,35 @@
+'use client';
 import Image from "next/image";
 import Script from "next/script";
 import Head from "next/head";
+import React, { useState, useEffect } from 'react';
 export default function Home() {
+  const [studentCount, setStudentCount] = useState(0);
+  const [classCount, setClassCount] = useState(0);
+  const [satisfactionRate, setSatisfactionRate] = useState(0);
+  const [instructorCount, setInstructorCount] = useState(0);
 
+  const countUp = (target, setter) => {
+    let count = 0;
+    const duration = 2000; // 2 seconds for counting
+    const increment = target / (duration / 50); // Increment every 50ms
+    const interval = setInterval(() => {
+      count += increment;
+      if (count >= target) {
+        clearInterval(interval);
+        setter(target); // Set to final value
+      } else {
+        setter(Math.floor(count)); // Update state with incremented value
+      }
+    }, 50);
+  };
+
+  useEffect(() => {
+    countUp(29300, setStudentCount); // 29.3k
+    countUp(32400, setClassCount); // 32.4K
+    countUp(100, setSatisfactionRate); // 100%
+    countUp(354, setInstructorCount); // 354+
+  }, []);
   return (
 <>
 <link rel="stylesheet" href="./assets/css/style.css" />
@@ -610,35 +637,38 @@ export default function Home() {
 
       {/* STATISTICS Section */}
       <section className="section stats" aria-label="stats">
-        <div className="container">
-          <ul className="grid-list">
-            <li>
-              <div className="stats-card" style={{ '--color': '170, 75%, 41%' }}>
-                <h3 className="card-title">29.3k</h3>
-                <p className="card-text">Student Enrolled</p>
-              </div>
-            </li>
-            <li>
-              <div className="stats-card" style={{ '--color': '351, 83%, 61%' }}>
-                <h3 className="card-title">32.4K</h3>
-                <p className="card-text">Class Completed</p>
-              </div>
-            </li>
-            <li>
-              <div className="stats-card" style={{ '--color': '260, 100%, 67%' }}>
-                <h3 className="card-title">100%</h3>
-                <p className="card-text">Satisfaction Rate</p>
-              </div>
-            </li>
-            <li>
-              <div className="stats-card" style={{ '--color': '42, 94%, 55%' }}>
-                <h3 className="card-title">354+</h3>
-                <p className="card-text">Top Instructors</p>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </section>
+      <div className="container">
+        <ul className="grid-list">
+          <li>
+            <div className="stats-card" style={{ '--color': '170, 75%, 41%' }}>
+              <h3 className="card-title">{studentCount.toLocaleString()}</h3>
+              <p className="card-text">Student Enrolled</p>
+            </div>
+          </li>
+
+          <li>
+            <div className="stats-card" style={{ '--color': '351, 83%, 61%' }}>
+              <h3 className="card-title">{classCount.toLocaleString()}</h3>
+              <p className="card-text">Class Completed</p>
+            </div>
+          </li>
+
+          <li>
+            <div className="stats-card" style={{ '--color': '260, 100%, 67%' }}>
+              <h3 className="card-title">{satisfactionRate}%</h3>
+              <p className="card-text">Satisfaction Rate</p>
+            </div>
+          </li>
+
+          <li>
+            <div className="stats-card" style={{ '--color': '42, 94%, 55%' }}>
+              <h3 className="card-title">{instructorCount.toLocaleString()}+</h3>
+              <p className="card-text">Top Instructors</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
 
       {/* BLOG Section */}
       <section
@@ -890,7 +920,9 @@ export default function Home() {
     <ion-icon name="chevron-up" aria-hidden="true" />
   </a>
 </>
-
+<Script src="./assets/js/script.js" defer></Script>
+<Script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></Script>
+<Script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></Script>
 </>
 
   );
